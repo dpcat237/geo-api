@@ -51,5 +51,9 @@ func (ctr *locationController) GetLocationByIP(w http.ResponseWriter, r *http.Re
 		returnFailed(w, model.NewErrorServer(fmt.Sprintf("%s. Status %d", resp.Message, resp.Code)))
 		return
 	}
+	if resp.Location.Id == 0 {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 	returnJson(w, model.LocationFromGRPC(resp.Location))
 }
